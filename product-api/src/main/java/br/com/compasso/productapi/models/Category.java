@@ -13,19 +13,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter 
-@Setter 
-@Entity(name = "brand")
+@Setter
+@Entity(name = "category")
 @NoArgsConstructor
-public class Brand {
+public class Category {
 	
 	@Id
-    @GeneratedValue(generator = "brand_generator")
+    @GeneratedValue(generator = "category_generator")
     @SequenceGenerator(
-            name = "brand_generator",
-            sequenceName = "brand_sequence",
+            name = "category_generator",
+            sequenceName = "category_generator",
             initialValue = 1
     )
-    @Column(updatable = false, nullable = false)
+	@Column(updatable = false, nullable = false)
 	private Long id;
 	
 	@NotBlank

@@ -2,36 +2,57 @@ package br.com.compasso.productapi.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter 
+@Setter 
 @Entity(name = "product")
-@Data
+@NoArgsConstructor
 public class Product {
 
 	@Id
     @GeneratedValue(generator = "product_generator")
     @SequenceGenerator(
             name = "product_generator",
-            sequenceName = "product_sequence",
+            sequenceName = "product_generator",
             initialValue = 1
     )
-    @Column(updatable = false, nullable = false)
+	@Column(updatable = false, nullable = false)
 	private Long id;
 	
-	@NotBlank
 	private String description;
 	
+	@NotBlank
+	@Size(min = 1, max = 20)
+	private String name;
+	
+	@NotNull
+	private double price;
+	
+	@NotNull
+	private double salePrice;
+	
+	@NotNull
 	private boolean enabled;
+	
+	@ManyToOne
+    @JoinColumn(name = "brand_id")
+	private Brand brand;
+	
+	@ManyToOne
+    @JoinColumn(name = "category_id")
+	private Category category;
+	
 }
