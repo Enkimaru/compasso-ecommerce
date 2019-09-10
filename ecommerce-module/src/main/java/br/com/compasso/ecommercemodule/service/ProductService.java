@@ -1,48 +1,47 @@
-//package br.com.compasso.ecommercemodule.service;
-//
-//import java.util.Optional;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.data.web.PageableDefault;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.ResponseBody;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import br.com.compasso.productapi.models.Product;
-//import br.com.compasso.productapi.repository.ProductRepository;
-//
-//@Service
-//public class ProductService {
-//
-//	@Autowired
-//	public ProductRepository productRepository;
-//
-//	public Page<Product> getAllProduct(@PageableDefault(page=0, size=5) Pageable pageable) {
-//		return productRepository.findAll(pageable);
-//	}
-//	
-//	public Optional<Product> getProductById(@PathVariable("id") Long id) {
-//		return productRepository.findById(id);
-//	}
-//
-//	public Product createProduct(@RequestBody Product product) {
-//		return productRepository.save(product);		
-//	}
-//	
-//	public Product updateProduct(Product product) {
-//		if (productRepository.findById(product.getId()).isPresent()){
-//			return productRepository.save(product);
-//		}
-//		return null;
-//	}
-//	
-//}
+package br.com.compasso.ecommercemodule.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import br.com.compasso.ecommercemodule.client.ProductClient;
+import br.com.compasso.ecommercemodule.models.Product;
+
+@Service
+public class ProductService {
+	
+	@Autowired
+	public ProductClient productClient;
+	
+	public List<Product> getProduct(
+			@RequestParam(value = "page", required = false) String page,
+			@RequestParam(value = "size", required = false) String size,
+			@RequestParam(value = "brand", required = false) String brand,
+			@RequestParam(value = "category", required = false) String category
+			) {
+			return productClient.getProduct(page, size, brand, category);
+	}
+	
+	public Product getProductById(Long id) {
+		return productClient.getProductById(id);
+	}
+
+	public Product getProductByName(String name) {
+		return productClient.getProductByName(name);
+	}
+ 
+	public Product createProduct(Product product) {
+		return productClient.createProduct(product);		
+	}
+	
+	public Product updateProduct(Product product) {
+		return productClient.updateProduct(product);
+	}
+
+	public void deleteProduct(Product product) {
+			productClient.deleteProduct(product);
+	}
+	
+}

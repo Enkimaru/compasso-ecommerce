@@ -11,7 +11,6 @@ import br.com.compasso.productapi.models.Brand;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
 	
-	
 	Optional<Brand> findByNameIgnoreCase(@Param("name") String name);
 	
 }

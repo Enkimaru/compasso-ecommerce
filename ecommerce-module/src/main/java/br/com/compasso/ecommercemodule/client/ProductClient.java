@@ -1,11 +1,14 @@
 package br.com.compasso.ecommercemodule.client;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.compasso.ecommercemodule.models.Product;
 
@@ -13,7 +16,25 @@ import br.com.compasso.ecommercemodule.models.Product;
 @FeignClient(url = "http://localhost:8091", name = "product")
 public interface ProductClient {
 	
-    @RequestMapping(method = RequestMethod.GET, value = "/product/{id}")
-    public Optional<Product> getProductById(@PathVariable("id") Long id);
+    @GetMapping(value = "/product")
+    public List<Product> getProduct(@RequestParam(value = "page", required = false) String page,
+    		@RequestParam(value = "size", required = false) String size,
+			@RequestParam(value = "brand", required = false) String brand,
+			@RequestParam(value = "category", required = false) String category);
+
+    @GetMapping(value = "/product")
+    public Product getProductByName(@RequestParam String name);
+
+    @GetMapping(value = "/product/{id}")
+	public Product getProductById(@PathVariable Long id);
+
+    @PostMapping(value = "/product/createProduct")
+	public Product createProduct(Product product);
+
+    @PutMapping(value = "/product/updateProduct")
+	public Product updateProduct(Product product);
+
+    @DeleteMapping(value = "/product/deleteProduct")
+	public void deleteProduct(Product product);
     
 }
