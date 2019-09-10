@@ -1,12 +1,14 @@
 package br.com.compasso.productapi.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -48,11 +50,17 @@ public class Product {
 	private boolean enabled;
 	
 	@ManyToOne
+	@NotNull
     @JoinColumn(name = "brand_id")
 	private Brand brand;
 	
 	@ManyToOne
+	@NotNull
     @JoinColumn(name = "category_id")
 	private Category category;
+	
+	@OneToMany
+	@JoinColumn(name = "product_id")
+	private List<Sku> skus;
 	
 }

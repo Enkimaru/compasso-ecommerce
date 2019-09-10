@@ -17,42 +17,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.compasso.productapi.models.Brand;
-import br.com.compasso.productapi.repository.BrandRepository;
+import br.com.compasso.productapi.models.Product;
+import br.com.compasso.productapi.repository.ProductRepository;
 
 @Service
-public class BrandService {
+public class ProductService {
 
 	@Autowired
-	public BrandRepository brandRepository;
+	public ProductRepository productRepository;
 
-	public Page<Brand> getAllBrand(@PageableDefault(page=0, size=5) Pageable pageable) {
-		return brandRepository.findAll(pageable);
+	public Page<Product> getAllProduct(@PageableDefault(page=0, size=5) Pageable pageable) {
+		return productRepository.findAll(pageable);
 	}
 	
-	public Optional<Brand> getBrandById(@PathVariable("id") Long id) {
-		return brandRepository.findById(id);
-	}
-	
-	public Optional<Brand> getBrandByName(@PathVariable("name") String name) {
-		return brandRepository.findByNameIgnoreCase(name);
+	public Optional<Product> getProductById(@PathVariable("id") Long id) {
+		return productRepository.findById(id);
 	}
 
-	public Brand createBrand(@RequestBody Brand brand) {
-		return brandRepository.save(brand);		
+	public Product createProduct(@RequestBody Product product) {
+		return productRepository.save(product);		
 	}
 	
-	public Brand updateBrand(Brand brand) {
-		if (brandRepository.findById(brand.getId()).isPresent()){
-			return brandRepository.save(brand);
+	public Product updateProduct(Product product) {
+		if (productRepository.findById(product.getId()).isPresent()){
+			return productRepository.save(product);
 		}
 		return null;
 	}
 
-	public void deleteBrand(Brand brand) {
-		if (brandRepository.findById(brand.getId()).isPresent()){
-			brandRepository.delete(brand);
-		}
-	}
+//	public void deleteProduct(Product product) {
+//		if (productRepository.findById(product.getId()).isPresent()){
+//			productRepository.delete(product);
+//		}
+//	}
 	
 }
