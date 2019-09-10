@@ -1,7 +1,5 @@
 package br.com.compasso.ecommercemodule.models;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,23 +7,20 @@ import lombok.Setter;
 @Getter 
 @Setter 
 @NoArgsConstructor
-public class Product {
-	private Long id;
+public class Sku {
 	
-	private String description;
+	private Long id;
 	
 	private String name;
 	
+	private String description;
+	
+	private int stock;
+	
 	private double price;
 	
-	private double salePrice;
-	
 	private boolean enabled;
-	
-	private Brand brand;
-	
-	private Category category;
-	
-	private List<Sku> skus;
-	
+
+	private Product product;
+
 }

@@ -1,5 +1,6 @@
 package br.com.compasso.productapi.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class BrandService {
 	@Autowired
 	public BrandRepository brandRepository;
 
-	public Page<Brand> getAllBrand(@PageableDefault(page=0, size=5) Pageable pageable) {
-		return brandRepository.findAll(pageable);
+	public List<Brand> getAllBrand(@PageableDefault(page=0, size=5) Pageable pageable) {
+		return brandRepository.findAll(pageable).getContent();
 	}
 	
 	public Optional<Brand> getBrandById(@PathVariable("id") Long id) {

@@ -44,11 +44,5 @@ public class ProductService {
 		}
 		return null;
 	}
-
-//	public void deleteProduct(Product product) {
-//		if (productRepository.findById(product.getId()).isPresent()){
-//			productRepository.delete(product);
-//		}
-//	}
 	
 }
