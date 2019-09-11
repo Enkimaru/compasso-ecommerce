@@ -5,7 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import br.com.compasso.ecommercemodule.client.ProductClient;
+
+import br.com.compasso.ecommercemodule.clients.ProductClient;
 
 @SpringBootApplication
 //@EnableEurekaClient
