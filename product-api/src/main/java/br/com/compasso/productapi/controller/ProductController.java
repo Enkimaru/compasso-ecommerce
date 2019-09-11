@@ -3,6 +3,7 @@ package br.com.compasso.productapi.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
+import br.com.compasso.productapi.models.dto.ProductDTO;
 import br.com.compasso.productapi.models.Product;
 import br.com.compasso.productapi.service.ProductService;
 
@@ -59,8 +61,8 @@ public class ProductController {
 
 	@PostMapping(path = "/createProduct", consumes = "application/json", produces = "application/json")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Product createProduct(@RequestBody Product product) {
-		return productService.createProduct(product);		
+	public Product createProduct(@RequestBody ProductDTO productDTO) {
+		return productService.createProduct(productDTO);		
 	}
 	
 	@PutMapping(path = "/updateProduct", consumes = "application/json", produces = "application/json")

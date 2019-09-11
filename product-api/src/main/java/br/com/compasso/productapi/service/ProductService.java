@@ -3,6 +3,7 @@ package br.com.compasso.productapi.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.compasso.productapi.models.Product;
+import br.com.compasso.productapi.models.dto.ProductDTO;
 import br.com.compasso.productapi.repository.ProductRepository;
 
 @Service
@@ -46,7 +48,9 @@ public class ProductService {
 		return productRepository.findByNameIgnoreCase(name);
 	}
 
-	public Product createProduct(@RequestBody Product product) {
+	public Product createProduct(@RequestBody ProductDTO productDTO) {
+		ModelMapper modelMapper = new ModelMapper();
+		Product product = modelMapper.map(productDTO, Product.class);
 		return productRepository.save(product);		
 	}
 	

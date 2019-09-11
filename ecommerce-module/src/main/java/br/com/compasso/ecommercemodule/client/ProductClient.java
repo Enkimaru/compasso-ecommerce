@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.compasso.ecommercemodule.models.Product;
+import br.com.compasso.ecommercemodule.models.dto.ProductDTO;
 
 //@FeignClient(value = "product-api")
 @FeignClient(url = "http://localhost:8091", name = "product")
@@ -29,7 +30,7 @@ public interface ProductClient {
 	public Product getProductById(@PathVariable Long id);
 
     @PostMapping(value = "/product/createProduct")
-	public Product createProduct(Product product);
+	public Product createProduct(ProductDTO productDTO);
 
     @PutMapping(value = "/product/updateProduct")
 	public Product updateProduct(Product product);

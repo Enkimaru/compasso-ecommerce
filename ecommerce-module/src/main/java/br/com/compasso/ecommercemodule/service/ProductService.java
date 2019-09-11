@@ -2,12 +2,14 @@ package br.com.compasso.ecommercemodule.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.compasso.ecommercemodule.client.ProductClient;
 import br.com.compasso.ecommercemodule.models.Product;
+import br.com.compasso.ecommercemodule.models.dto.ProductDTO;
 
 @Service
 public class ProductService {
@@ -33,7 +35,11 @@ public class ProductService {
 	}
  
 	public Product createProduct(Product product) {
-		return productClient.createProduct(product);		
+		
+		ModelMapper modelMapper = new ModelMapper();
+		ProductDTO dto = modelMapper.map(product, ProductDTO.class);
+		
+		return productClient.createProduct(dto);		
 	}
 	
 	public Product updateProduct(Product product) {

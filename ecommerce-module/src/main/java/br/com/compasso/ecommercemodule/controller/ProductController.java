@@ -28,7 +28,7 @@ public class ProductController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<List<Product>> getAllProduct(@RequestParam(value = "page", required = false) String page,
+	public ResponseEntity<List<Product>> getProduct(@RequestParam(value = "page", required = false) String page,
 			@RequestParam(value = "size", required = false) String size,
 			@RequestParam(value = "brand", required = false) String brand,
 			@RequestParam(value = "category", required = false) String category) {

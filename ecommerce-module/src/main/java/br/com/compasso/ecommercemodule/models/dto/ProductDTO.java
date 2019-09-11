@@ -1,7 +1,7 @@
-package br.com.compasso.productapi.models.dto;
+package br.com.compasso.ecommercemodule.models.dto;
 
-import br.com.compasso.productapi.models.Brand;
-import br.com.compasso.productapi.models.Category;
+import br.com.compasso.ecommercemodule.models.Brand;
+import br.com.compasso.ecommercemodule.models.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,11 +9,16 @@ import lombok.Setter;
 @Getter 
 @Setter 
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductDTO {	
 	private String description;
+	
 	private String name;
+	
 	private double price;
+	
 	private double salePrice;
+		
 	private Brand brand;
+	
 	private Category category;	
 }
