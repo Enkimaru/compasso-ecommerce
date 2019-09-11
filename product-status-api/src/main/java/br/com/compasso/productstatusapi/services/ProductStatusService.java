@@ -40,14 +40,17 @@ public class ProductStatusService {
 	public Integer deactivateProduct(Long id) {
 		return productStatusRepository.deactivateProduct(id);
 	}
+	
+	@Transactional
+	public Integer activateProduct(Long id) {
+		if (isValid(id)) {
+			return productStatusRepository.activateProduct(id);
+		}
+			return null;
+	}
 	public Optional<Product> getProductByName(@PathVariable("name") String name) {
 		return productStatusRepository.findByNameIgnoreCase(name);
 	}
-//	public Stock updateStock(Stock stock) {
-//		if (stockRepository.findById(stock.getId()).isPresent()){
-//			return stockRepository.save(stock);
-//		}
-//		return null;
-//	}
+
 	
 }

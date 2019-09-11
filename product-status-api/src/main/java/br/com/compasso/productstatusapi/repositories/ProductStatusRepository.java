@@ -18,4 +18,8 @@ public interface ProductStatusRepository extends JpaRepository<Product, Long> {
 	@Modifying
 	@Query("update product p set p.enabled = false where p.id = :id")
 	Integer deactivateProduct(@Param("id") Long id);
+	
+	@Modifying
+	@Query("update product p set p.enabled = true where p.id = :id")
+	Integer activateProduct(@Param("id") Long id);
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,11 @@ public class ProductStatusController {
 	public Integer deactivateProduct(@PathVariable("id") Long id) {
 		return productStatusService.deactivateProduct(id);
 	}
+	
+	@PutMapping("/activateProduct/{id}")
+	public Integer activateProduct(@PathVariable("id") Long id) {
+		return productStatusService.activateProduct(id);
+	}
 
 	@GetMapping (params = "name")
 	public Product getProductByName(String name) {
@@ -32,10 +38,5 @@ public class ProductStatusController {
 		}
 		return null;
 	}
-//	@PutMapping(path = "/updateProductStatus", consumes = "application/json", produces = "application/json")
-//	@ResponseStatus(HttpStatus.OK)
-//	public ProductStatus updateProductStatus(@RequestBody ProductStatus productStatus) {
-//		return productStatusService.updateProductStatus(productStatus);
-//	}
 	
 }
