@@ -48,9 +48,4 @@ public class ProductStatusService {
 		}
 			return null;
 	}
-	public Optional<Product> getProductByName(@PathVariable("name") String name) {
-		return productStatusRepository.findByNameIgnoreCase(name);
-	}
-
-	
 }

@@ -20,7 +20,7 @@ public class ProductStatusController {
 	@Autowired
 	public ProductStatusService productStatusService;
 	
-	@DeleteMapping("/deactivateProduct/{id}")
+	@PutMapping("/deactivateProduct/{id}")
 	public Integer deactivateProduct(@PathVariable("id") Long id) {
 		return productStatusService.deactivateProduct(id);
 	}
@@ -29,14 +29,4 @@ public class ProductStatusController {
 	public Integer activateProduct(@PathVariable("id") Long id) {
 		return productStatusService.activateProduct(id);
 	}
-
-	@GetMapping (params = "name")
-	public Product getProductByName(String name) {
-		Optional<Product> product = productStatusService.getProductByName(name);
-		if (product.isPresent()) {
-			return product.get();
-		}
-		return null;
-	}
-	
 }
