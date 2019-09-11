@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public interface ProductStatusClient {
 	
 
-    @DeleteMapping(value = "/productStatus/deactivateProduct/{id}")
+    @PutMapping(value = "/productStatus/deactivateProduct/{id}")
 	public void deleteProduct(@PathVariable("id") Long id);
     
     @PutMapping(value = "/productStatus/activateProduct/{id}")
