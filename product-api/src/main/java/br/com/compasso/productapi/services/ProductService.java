@@ -60,12 +60,5 @@ public class ProductService {
 		}
 		return null;
 	}
-
-	public void deleteProduct(Product product) {
-		///usar a API de controle de status de produto
-//		if (productRepository.findById(product.getId()).isPresent()){
-//			productRepository.delete(product);
-//		}
-	}
 	
 }

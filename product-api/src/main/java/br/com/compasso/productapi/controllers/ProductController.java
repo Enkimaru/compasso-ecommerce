@@ -3,11 +3,10 @@ package br.com.compasso.productapi.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
 
 import br.com.compasso.productapi.models.Product;
 import br.com.compasso.productapi.models.dtos.ProductDTO;
@@ -69,12 +67,6 @@ public class ProductController {
 	@ResponseStatus(HttpStatus.OK)
 	public Product updateProduct(@RequestBody Product product) {
 		return productService.updateProduct(product);
-	}
-	
-	@DeleteMapping(path = "/deleteProduct", consumes = "application/json", produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	public void deleteProduct(@RequestBody Product product) {
-		productService.deleteProduct(product);
 	}
 	
 }

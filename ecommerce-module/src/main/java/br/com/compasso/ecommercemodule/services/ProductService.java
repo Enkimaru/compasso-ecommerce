@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.compasso.ecommercemodule.clients.ProductClient;
+import br.com.compasso.ecommercemodule.clients.ProductStatusClient;
 import br.com.compasso.ecommercemodule.models.Product;
 import br.com.compasso.ecommercemodule.models.dtos.ProductDTO;
 
@@ -16,6 +17,9 @@ public class ProductService {
 	
 	@Autowired
 	public ProductClient productClient;
+	
+	@Autowired
+	public ProductStatusClient productStatusClient;
 	
 	public List<Product> getProduct(
 			@RequestParam(value = "page", required = false) String page,
@@ -46,8 +50,8 @@ public class ProductService {
 		return productClient.updateProduct(product);
 	}
 
-	public void deleteProduct(Product product) {
-			productClient.deleteProduct(product);
+	public void deleteProduct(Long id) {
+		productStatusClient.deleteProduct(id);
 	}
 	
 }
