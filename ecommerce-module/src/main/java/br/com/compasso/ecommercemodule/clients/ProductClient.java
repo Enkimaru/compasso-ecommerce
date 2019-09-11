@@ -21,6 +21,12 @@ public interface ProductClient {
     		@RequestParam(value = "size", required = false) String size,
 			@RequestParam(value = "brand", required = false) String brand,
 			@RequestParam(value = "category", required = false) String category);
+    
+    @GetMapping(value = "/product/enabled")
+    public List<Product> getProductEnabled(@RequestParam(value = "page", required = false) String page,
+    		@RequestParam(value = "size", required = false) String size,
+			@RequestParam(value = "brand", required = false) String brand,
+			@RequestParam(value = "category", required = false) String category);
 
     @GetMapping(value = "/product")
     public Product getProductByName(@RequestParam String name);

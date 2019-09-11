@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +33,15 @@ public class ProductController {
 			@RequestParam(value = "brand", required = false) String brand,
 			@RequestParam(value = "category", required = false) String category) {
 		return new ResponseEntity<>(productService.getProduct(page, size, brand, category), HttpStatus.OK);
+	}
+	
+	@GetMapping("/enabled")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<List<Product>> getProductEnabled(@RequestParam(value = "page", required = false) String page,
+			@RequestParam(value = "size", required = false) String size,
+			@RequestParam(value = "brand", required = false) String brand,
+			@RequestParam(value = "category", required = false) String category) {
+		return new ResponseEntity<>(productService.getProductEnabled(page, size, brand, category), HttpStatus.OK);
 	}
 	
 	@GetMapping(params = "name")
@@ -64,6 +72,13 @@ public class ProductController {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long id) {
 		productService.deleteProduct(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping(path = "/activateProduct/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<Product> activateProduct(@PathVariable("id") Long id) {
+		productService.activateProduct(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

@@ -36,6 +36,14 @@ public class ProductController {
 		return productService.getProduct(pageable, brand, category);
 	}
 	
+	@GetMapping("/enabled")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Product> getProductEnabled(@PageableDefault(page=0, size=5) Pageable pageable, 
+			@RequestParam(value = "brand", required = false) String brand,
+			@RequestParam(value = "category", required = false) String category) {
+		return productService.getProductEnabled(pageable, brand, category);
+	}
+	
 	@GetMapping (params = "name")
 	public Product getProductByName(String name) {
 		Optional<Product> product = productService.getProductByName(name);

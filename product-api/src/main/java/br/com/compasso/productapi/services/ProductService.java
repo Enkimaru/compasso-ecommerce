@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
@@ -28,15 +29,34 @@ public class ProductService {
 		
 		if (brand != null) {
 			if (category != null) {
-				return productRepository.findByBrandNameAndCategoryNameIgnoreCase(brand, category);
+				return productRepository.findByBrandNameAndCategoryNameIgnoreCase(brand, category, pageable).getContent();
 			} else {
-				return productRepository.findByBrandNameIgnoreCase(brand);
+				return productRepository.findByBrandNameIgnoreCase(brand, pageable).getContent();
 			}
 		} else if (category != null) {
-			return productRepository.findByCategoryNameIgnoreCase(category);
+			return productRepository.findByCategoryNameIgnoreCase(category, pageable).getContent();
 		}
 		
 		return productRepository.findAll(pageable).getContent();
+		
+	}
+	
+	public List<Product> getProductEnabled(@PageableDefault(page=0, size=5) Pageable pageable,
+			@RequestParam(value = "brand", required = false) String brand,
+			@RequestParam(value = "category", required = false) String category) {
+		
+		if (brand != null) {
+			if (category != null) {
+				return productRepository.findByEnabledAndBrandNameAndCategoryNameIgnoreCase(true, brand, category, pageable).getContent();
+			} else {
+				return productRepository.findByEnabledAndBrandNameIgnoreCase(true, brand, pageable).getContent();
+			}
+		} else if (category != null) {
+			return productRepository.findByEnabledAndCategoryNameIgnoreCase(true, category, pageable).getContent();
+		}
+		
+		
+		return productRepository.findByEnabled(true, pageable).getContent();
 		
 	}
 	

@@ -30,6 +30,15 @@ public class ProductService {
 			return productClient.getProduct(page, size, brand, category);
 	}
 	
+	public List<Product> getProductEnabled(
+			@RequestParam(value = "page", required = false) String page,
+			@RequestParam(value = "size", required = false) String size,
+			@RequestParam(value = "brand", required = false) String brand,
+			@RequestParam(value = "category", required = false) String category
+			) {
+			return productClient.getProductEnabled(page, size, brand, category);
+	}
+	
 	public Product getProductById(Long id) {
 		return productClient.getProductById(id);
 	}
@@ -52,6 +61,10 @@ public class ProductService {
 
 	public void deleteProduct(Long id) {
 		productStatusClient.deleteProduct(id);
+	}
+	
+	public void activateProduct(Long id) {
+		productStatusClient.activateProduct(id);
 	}
 	
 }
