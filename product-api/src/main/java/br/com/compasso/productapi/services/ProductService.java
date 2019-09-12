@@ -3,12 +3,15 @@ package br.com.compasso.productapi.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,54 +25,23 @@ public class ProductService {
 
 	@Autowired
 	public ProductRepository productRepository;
+	
+	@Autowired
+	public ModelMapper modelMapper;
 
-	public List<Product> getProduct(@PageableDefault(page=0, size=5) Pageable pageable,
-			@RequestParam(value = "brand", required = false) String brand,
-			@RequestParam(value = "category", required = false) String category) {
-		
-		if (brand != null) {
-			if (category != null) {
-				return productRepository.findByBrandNameAndCategoryNameIgnoreCase(brand, category, pageable).getContent();
-			} else {
-				return productRepository.findByBrandNameIgnoreCase(brand, pageable).getContent();
-			}
-		} else if (category != null) {
-			return productRepository.findByCategoryNameIgnoreCase(category, pageable).getContent();
-		}
-		
-		return productRepository.findAll(pageable).getContent();
-		
+	public List<Product> getProduct(@PageableDefault(page=0, size=5) Pageable pageable) {	
+		return productRepository.findAll(pageable).getContent();	
 	}
 	
-	public List<Product> getProductEnabled(@PageableDefault(page=0, size=5) Pageable pageable,
-			@RequestParam(value = "brand", required = false) String brand,
-			@RequestParam(value = "category", required = false) String category) {
-		
-		if (brand != null) {
-			if (category != null) {
-				return productRepository.findByEnabledAndBrandNameAndCategoryNameIgnoreCase(true, brand, category, pageable).getContent();
-			} else {
-				return productRepository.findByEnabledAndBrandNameIgnoreCase(true, brand, pageable).getContent();
-			}
-		} else if (category != null) {
-			return productRepository.findByEnabledAndCategoryNameIgnoreCase(true, category, pageable).getContent();
-		}
-		
-		
-		return productRepository.findByEnabled(true, pageable).getContent();
-		
-	}
-	
-	public Optional<Product> getProductById(@PathVariable("id") Long id) {
-		return productRepository.findById(id);
-	}
-	
-	public Optional<Product> getProductByName(@PathVariable("name") String name) {
-		return productRepository.findByNameIgnoreCase(name);
+	public Product getProductById(Long id) {
+		if (productRepository.findById(id).isPresent()) {
+			return productRepository.findById(id).get(); 
+		} else {
+            throw new EntityNotFoundException("Produto com ID:" + id.toString() + " não foi encontrado.");
+		}		
 	}
 
-	public Product createProduct(@RequestBody ProductDTO productDTO) {
-		ModelMapper modelMapper = new ModelMapper();
+	public Product createProduct(ProductDTO productDTO) {
 		Product product = modelMapper.map(productDTO, Product.class);
 		return productRepository.save(product);		
 	}
@@ -77,8 +49,14 @@ public class ProductService {
 	public Product updateProduct(Product product) {
 		if (productRepository.findById(product.getId()).isPresent()){
 			return productRepository.save(product);
+		} else {
+            throw new EntityNotFoundException("Produto com ID:" + id.toString() + " não foi encontrado.");
 		}
-		return null;
+	}
+	
+	@Transactional
+	public Integer deactivateProduct(Long id) {
+		return productRepository.deactivateProduct(id);
 	}
 	
 }

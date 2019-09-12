@@ -6,7 +6,9 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import br.com.compasso.ecommercemodule.models.Product;
 import br.com.compasso.ecommercemodule.models.Sku;
+import br.com.compasso.ecommercemodule.models.dtos.ProductDTO;
 import br.com.compasso.ecommercemodule.models.dtos.SkuDTO;
 
 @Configuration
@@ -25,6 +27,13 @@ public class AppConfig {
 	     map().getProduct().setId(source.getProductId());
 	   }
 	 };
+	 
+	   private PropertyMap<ProductDTO, Product> productMap = new PropertyMap<ProductDTO, Product>() {
+		   protected void configure() {
+		     map().getBrand().setId(source.getBrandId());
+		     map().getCategory().setId(source.getCategoryId());
+		   }
+		 };
 
 	 
 }

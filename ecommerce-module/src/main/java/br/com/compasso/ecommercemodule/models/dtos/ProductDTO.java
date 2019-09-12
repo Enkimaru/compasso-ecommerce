@@ -14,11 +14,11 @@ public class ProductDTO {
 	
 	private String name;
 	
-	private double price;
+	private Double price;
 	
-	private double salePrice;
+	private Double salePrice;
 		
-	private Brand brand;
+	private Long brandId;
 	
-	private Category category;	
+	private Long categoryId;	
 }

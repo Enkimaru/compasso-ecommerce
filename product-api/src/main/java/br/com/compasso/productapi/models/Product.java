@@ -26,11 +26,7 @@ public class Product {
 
 	@Id
     @GeneratedValue(generator = "product_generator")
-    @SequenceGenerator(
-            name = "product_generator",
-            sequenceName = "product_generator",
-            initialValue = 1
-    )
+    @SequenceGenerator(name = "product_generator", sequenceName = "product_generator", allocationSize = 1)
 	@Column(updatable = false, nullable = false)
 	private Long id;
 	
@@ -41,12 +37,11 @@ public class Product {
 	private String name;
 	
 	@NotNull
-	private double price;
+	private Double price;
 	
 	@NotNull
-	private double salePrice;
+	private Double salePrice;
 	
-	@NotNull
 	private boolean enabled;
 	
 	@ManyToOne

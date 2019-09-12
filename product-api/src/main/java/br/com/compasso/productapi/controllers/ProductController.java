@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,52 +32,30 @@ public class ProductController {
 	public ProductService productService;
 
 	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
-	public List<Product> getProduct(@PageableDefault(page=0, size=5) Pageable pageable, 
-			@RequestParam(value = "brand", required = false) String brand,
-			@RequestParam(value = "category", required = false) String category) {
-		return productService.getProduct(pageable, brand, category);
+	public ResponseEntity<List<Product>> getProduct(@PageableDefault(page=0, size=5) Pageable pageable) {
+		return ResponseEntity.ok(productService.getProduct(pageable));
 	}
 	
-	@GetMapping("/enabled")
-	@ResponseStatus(HttpStatus.OK)
-	public List<Product> getProductEnabled(@PageableDefault(page=0, size=5) Pageable pageable, 
-			@RequestParam(value = "brand", required = false) String brand,
-			@RequestParam(value = "category", required = false) String category) {
-		return productService.getProductEnabled(pageable, brand, category);
-	}
-	
-	@GetMapping (params = "name")
-	public Product getProductByName(String name) {
-		Optional<Product> product = productService.getProductByName(name);
-		if (product.isPresent()) {
-			return product.get();
-		}
-		return null;
-	}
-
 	@GetMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public Product getProductById(@PathVariable("id") Long id) {
-		Optional<Product> product = productService.getProductById(id);
-		
-		if (product.isPresent()) {
-			return product.get();
-		}
-		
-		return null;
+	public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(productService.getProductById(id));
 	}
 
-	@PostMapping(path = "/createProduct", consumes = "application/json", produces = "application/json")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Product createProduct(@RequestBody ProductDTO productDTO) {
-		return productService.createProduct(productDTO);		
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public Long createProduct(@RequestBody ProductDTO productDTO) {
+		return productService.createProduct(productDTO).getId();		
 	}
 	
-	@PutMapping(path = "/updateProduct", consumes = "application/json", produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
+	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public Product updateProduct(@RequestBody Product product) {
 		return productService.updateProduct(product);
 	}
+	
+//	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long id) {
+//		productService.deleteProduct(id);
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
+	
 	
 }
