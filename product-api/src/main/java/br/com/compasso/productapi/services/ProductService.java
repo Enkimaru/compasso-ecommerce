@@ -50,7 +50,7 @@ public class ProductService {
 		if (productRepository.findById(product.getId()).isPresent()){
 			return productRepository.save(product);
 		} else {
-            throw new EntityNotFoundException("Produto com ID:" + id.toString() + " não foi encontrado.");
+            throw new EntityNotFoundException("Produto com ID:" + product.getId().toString() + " não foi encontrado.");
 		}
 	}
 	
