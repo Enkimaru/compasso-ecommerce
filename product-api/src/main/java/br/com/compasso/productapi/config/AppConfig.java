@@ -1,5 +1,6 @@
 package br.com.compasso.productapi.config;
 
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
@@ -15,8 +16,13 @@ public class AppConfig {
    @Bean
    public ModelMapper modelMapper() {
       ModelMapper modelMapper = new ModelMapper();
-      modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
+      modelMapper.getConfiguration()
+      			 .setSkipNullEnabled(true)
+      			 .setMatchingStrategy(MatchingStrategies.STRICT)
+      			 .setPropertyCondition(Conditions.isNotNull());
+
       modelMapper.addMappings(productMap);
+      
       return modelMapper;
    }
 	 
@@ -26,6 +32,4 @@ public class AppConfig {
 		   map().getCategory().setId(source.getCategoryId());
 	   }
 	};
-
-	 
 }

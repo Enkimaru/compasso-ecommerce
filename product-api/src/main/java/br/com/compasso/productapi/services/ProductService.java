@@ -7,14 +7,10 @@ import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.compasso.productapi.models.Product;
 import br.com.compasso.productapi.models.dtos.ProductDTO;
@@ -41,16 +37,21 @@ public class ProductService {
 		}		
 	}
 
-	public Product createProduct(ProductDTO productDTO) {
-		Product product = modelMapper.map(productDTO, Product.class);
-		return productRepository.save(product);		
+	public void createProduct(ProductDTO productDTO) {
+			Product product = modelMapper.map(productDTO, Product.class);
+			productRepository.save(product);	
 	}
 	
-	public Product updateProduct(Product product) {
-		if (productRepository.findById(product.getId()).isPresent()){
-			return productRepository.save(product);
+	public void updateProduct(Long id, ProductDTO productDTO) {
+		Optional<Product> optionalProduct = productRepository.findById(id);
+		if (optionalProduct.isPresent()){
+			Product dbProduct = optionalProduct.get();
+			Product product = modelMapper.map(productDTO, Product.class);
+			
+			modelMapper.map(product, dbProduct);
+			productRepository.save(dbProduct);
 		} else {
-            throw new EntityNotFoundException("Produto com ID:" + product.getId().toString() + " não foi encontrado.");
+            throw new EntityNotFoundException("Produto com ID:" + id.toString() + " não foi encontrado.");
 		}
 	}
 	

@@ -1,16 +1,18 @@
 package br.com.compasso.productapi.services;
 
 import java.util.List;
-import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.compasso.productapi.models.Category;
+import br.com.compasso.productapi.models.dtos.CategoryDTO;
 import br.com.compasso.productapi.repositories.CategoryRepository;
 
 @Service
@@ -18,33 +20,43 @@ public class CategoryService {
 
 	@Autowired
 	public CategoryRepository categoryRepository;
+	
+	@Autowired
+	public ModelMapper modelMapper;
 
-	public List<Category> getAllCategory(@PageableDefault(page=0, size=5) Pageable pageable) {
+	public List<Category> getCategory(@PageableDefault(page=0, size=5) Pageable pageable) {
 		return categoryRepository.findAll(pageable).getContent();
 	}
 	
-	public Optional<Category> getCategoryById(@PathVariable("id") Long id) {
-		return categoryRepository.findById(id);
-	}
-	
-	public Optional<Category> getCategoryByName(@PathVariable("name") String name) {
-		return categoryRepository.findByNameIgnoreCase(name);
+	public Category getCategoryById(Long id) {
+		if (categoryRepository.findById(id).isPresent()) {
+			return categoryRepository.findById(id).get();
+		} else {
+            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrado.");
+		}	
 	}
 
-	public Category createCategory(@RequestBody Category category) {
-		return categoryRepository.save(category);		
+	public void createCategory(@RequestBody CategoryDTO categoryDTO) {
+			Category category = modelMapper.map(categoryDTO, Category.class);
+			categoryRepository.save(category);		
 	}
 	
-	public Category updateCategory(Category category) {
-		if (categoryRepository.findById(category.getId()).isPresent()){
-			return categoryRepository.save(category);
+	public void updateCategory(Long id, CategoryDTO categoryDTO) {
+		if (categoryRepository.findById(id).isPresent()){
+			Category category = modelMapper.map(categoryDTO, Category.class);
+			category.setId(id);
+			
+			categoryRepository.save(category);
+		} else {
+            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrada.");
 		}
-		return null;
 	}
 
-	public void deleteCategory(Category category) {
-		if (categoryRepository.findById(category.getId()).isPresent()){
-			categoryRepository.delete(category);
+	public void deleteCategory(Long id) {
+		if (categoryRepository.findById(id).isPresent()){
+			categoryRepository.deleteById(id);
+		} else {
+            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrada.");
 		}
 	}
 	

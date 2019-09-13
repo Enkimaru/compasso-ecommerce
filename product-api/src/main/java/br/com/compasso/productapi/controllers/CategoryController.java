@@ -1,11 +1,13 @@
 package br.com.compasso.productapi.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
 
 import br.com.compasso.productapi.models.Category;
+import br.com.compasso.productapi.models.dtos.CategoryDTO;
 import br.com.compasso.productapi.services.CategoryService;
 
 @RestController
@@ -29,47 +31,32 @@ public class CategoryController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public List<Category> getAllCategory(@PageableDefault(page=0, size=5) Pageable pageable) {
-		return categoryService.getAllCategory(pageable);
-	}
-	
-	@GetMapping (params = "name")
-	public Category getCategoryByName(String name) {
-		Optional<Category> category = categoryService.getCategoryByName(name);
-		if (category.isPresent()) {
-			return category.get();
-		}
-		return null;
+	public ResponseEntity<List<Category>> getCategory(@PageableDefault(page=0, size=5) Pageable pageable) {
+		return ResponseEntity.ok(categoryService.getCategory(pageable));
 	}
 
 	@GetMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public Category getCategoryById(@PathVariable("id") Long id) {
-		Optional<Category> category = categoryService.getCategoryById(id);
-		
-		if (category.isPresent()) {
-			return category.get();
-		}
-		
-		return null;
+	public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(categoryService.getCategoryById(id));
 	}
 
-	@PostMapping(path = "/createCategory", consumes = "application/json", produces = "application/json")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Category createCategory(@RequestBody Category category) {
-		return categoryService.createCategory(category);		
+	@PostMapping
+	public ResponseEntity<Void> createCategory(@RequestBody CategoryDTO categoryDTO) {
+		categoryService.createCategory(categoryDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).build();		
 	}
 	
-	@PutMapping(path = "/updateCategory", consumes = "application/json", produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	public Category updateCategory(@RequestBody Category category) {
-		return categoryService.updateCategory(category);
+	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> updateCategory(@PathVariable("id") Long id,
+			@RequestBody CategoryDTO categoryDTO) {
+			categoryService.updateCategory(id, categoryDTO);
+		return ResponseEntity.ok().build();
 	}
 	
-	@DeleteMapping(path = "/deleteCategory", consumes = "application/json", produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	public void deleteCategory(@RequestBody Category category) {
-		categoryService.deleteCategory(category);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long id) {
+		categoryService.deleteCategory(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 }

@@ -1,16 +1,18 @@
 package br.com.compasso.productapi.services;
 
 import java.util.List;
-import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.compasso.productapi.models.Brand;
+import br.com.compasso.productapi.models.dtos.BrandDTO;
 import br.com.compasso.productapi.repositories.BrandRepository;
 
 @Service
@@ -18,33 +20,43 @@ public class BrandService {
 
 	@Autowired
 	public BrandRepository brandRepository;
+	
+	@Autowired
+	public ModelMapper modelMapper;
 
-	public List<Brand> getAllBrand(@PageableDefault(page=0, size=5) Pageable pageable) {
+	public List<Brand> getBrand(@PageableDefault(page=0, size=5) Pageable pageable) {
 		return brandRepository.findAll(pageable).getContent();
 	}
 	
-	public Optional<Brand> getBrandById(@PathVariable("id") Long id) {
-		return brandRepository.findById(id);
-	}
-	
-	public Optional<Brand> getBrandByName(@PathVariable("name") String name) {
-		return brandRepository.findByNameIgnoreCase(name);
+	public Brand getBrandById(Long id) {
+		if (brandRepository.findById(id).isPresent()) {
+			return brandRepository.findById(id).get();
+		} else {
+            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrado.");
+		}	
 	}
 
-	public Brand createBrand(@RequestBody Brand brand) {
-		return brandRepository.save(brand);		
+	public void createBrand(@RequestBody BrandDTO brandDTO) {
+			Brand brand = modelMapper.map(brandDTO, Brand.class);
+			brandRepository.save(brand);		
 	}
 	
-	public Brand updateBrand(Brand brand) {
-		if (brandRepository.findById(brand.getId()).isPresent()){
-			return brandRepository.save(brand);
+	public void updateBrand(Long id, BrandDTO brandDTO) {
+		if (brandRepository.findById(id).isPresent()){
+			Brand brand = modelMapper.map(brandDTO, Brand.class);
+			brand.setId(id);
+			
+			brandRepository.save(brand);
+		} else {
+            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrada.");
 		}
-		return null;
 	}
 
-	public void deleteBrand(Brand brand) {
-		if (brandRepository.findById(brand.getId()).isPresent()){
-			brandRepository.delete(brand);
+	public void deleteBrand(Long id) {
+		if (brandRepository.findById(id).isPresent()){
+			brandRepository.deleteById(id);
+		} else {
+            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrada.");
 		}
 	}
 	
