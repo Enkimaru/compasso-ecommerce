@@ -25,7 +25,7 @@ public class ProductService {
 	@Autowired
 	public ModelMapper modelMapper;
 
-	public List<Product> getProduct(@PageableDefault(page=0, size=5) Pageable pageable) {	
+	public List<Product> getProduct(Pageable pageable) {	
 		return productRepository.findAll(pageable).getContent();	
 	}
 	

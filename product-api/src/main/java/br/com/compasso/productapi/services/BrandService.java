@@ -24,7 +24,7 @@ public class BrandService {
 	@Autowired
 	public ModelMapper modelMapper;
 
-	public List<Brand> getBrand(@PageableDefault(page=0, size=5) Pageable pageable) {
+	public List<Brand> getBrand(Pageable pageable) {
 		return brandRepository.findAll(pageable).getContent();
 	}
 	
@@ -32,11 +32,11 @@ public class BrandService {
 		if (brandRepository.findById(id).isPresent()) {
 			return brandRepository.findById(id).get();
 		} else {
-            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrado.");
+            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrada.");
 		}	
 	}
 
-	public void createBrand(@RequestBody BrandDTO brandDTO) {
+	public void createBrand(BrandDTO brandDTO) {
 			Brand brand = modelMapper.map(brandDTO, Brand.class);
 			brandRepository.save(brand);		
 	}

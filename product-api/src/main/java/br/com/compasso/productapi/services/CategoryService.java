@@ -24,7 +24,7 @@ public class CategoryService {
 	@Autowired
 	public ModelMapper modelMapper;
 
-	public List<Category> getCategory(@PageableDefault(page=0, size=5) Pageable pageable) {
+	public List<Category> getCategory(Pageable pageable) {
 		return categoryRepository.findAll(pageable).getContent();
 	}
 	
@@ -36,7 +36,7 @@ public class CategoryService {
 		}	
 	}
 
-	public void createCategory(@RequestBody CategoryDTO categoryDTO) {
+	public void createCategory(CategoryDTO categoryDTO) {
 			Category category = modelMapper.map(categoryDTO, Category.class);
 			categoryRepository.save(category);		
 	}
