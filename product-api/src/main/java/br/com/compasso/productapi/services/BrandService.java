@@ -30,7 +30,7 @@ public class BrandService {
 		if (brandRepository.findById(id).isPresent()) {
 			return brandRepository.findById(id).get();
 		} else {
-            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrada.");
+            throw new EntityNotFoundException("Marca com ID:" + id.toString() + " não foi encontrada.");
 		}	
 	}
 
@@ -46,15 +46,16 @@ public class BrandService {
 			
 			brandRepository.save(brand);
 		} else {
-            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrada.");
+            throw new EntityNotFoundException("Marca com ID:" + id.toString() + " não foi encontrada.");
 		}
 	}
 
 	public void deleteBrand(Long id) {
 		if (brandRepository.findById(id).isPresent()){
+			
 			brandRepository.deleteById(id);
 		} else {
-            throw new EntityNotFoundException("Categoria com ID:" + id.toString() + " não foi encontrada.");
+            throw new EntityNotFoundException("Marca com ID:" + id.toString() + " não foi encontrada.");
 		}
 	}
 	
