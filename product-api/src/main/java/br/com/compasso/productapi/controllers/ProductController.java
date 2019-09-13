@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,23 +38,24 @@ public class ProductController {
 		return ResponseEntity.ok(productService.getProductById(id));
 	}
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping
 	public ResponseEntity<Void> createProduct(@RequestBody ProductDTO productDTO) {
 		productService.createProduct(productDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).build();		
 	}
 	
-	@PutMapping(value= "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Product> updateProduct(@PathVariable("id") Long id,
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> updateProduct(@PathVariable("id") Long id,
 			@RequestBody ProductDTO productDTO) {
-		return ResponseEntity.ok(productService.updateProduct(id, productDTO));
+		productService.updateProduct(id, productDTO);
+		return ResponseEntity.ok().build();
 	}
 	
-//	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Product> deleteProduct(@PathVariable("id") Long id) {
-//		productService.deleteProduct(id);
-//		return new ResponseEntity<>(HttpStatus.OK);
-//	}
+	@PatchMapping("/deactivate/{id}")
+	public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
+		productService.deactivateProduct(id);
+		return ResponseEntity.ok().build();
+	}
 	
 	
 }
