@@ -30,7 +30,6 @@ public class BrandController {
 	public BrandService brandService;
 
 	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<Brand>> getBrand(@PageableDefault(page=0, size=5) Pageable pageable) {
 		return ResponseEntity.ok(brandService.getBrand(pageable));
 	}

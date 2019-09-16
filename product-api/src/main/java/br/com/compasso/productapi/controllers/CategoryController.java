@@ -30,7 +30,6 @@ public class CategoryController {
 	public CategoryService categoryService;
 
 	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<List<Category>> getCategory(@PageableDefault(page=0, size=5) Pageable pageable) {
 		return ResponseEntity.ok(categoryService.getCategory(pageable));
 	}
